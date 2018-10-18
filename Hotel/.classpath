@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/Security/jBCrypt-0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-lang3-3.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-lang3-3.7-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-lang3-3.7-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-lang3-3.7-tests.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-lang3-3.7-test-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-net-3.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-net-3.6-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-net-examples-3.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-text-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-text-1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-text-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-text-1.2-tests.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/commons-text-1.2-test-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/ftp4j-1.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/itextpdf-5.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/jgoodies-common-1.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/jgoodies-looks-2.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/junit-4.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/mysql-connector-java-5.1.46.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/mysql-connector-java-5.1.46-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/workspace/Software/pdfbox-app-2.0.9.jar"/>
+	<classpathentry kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

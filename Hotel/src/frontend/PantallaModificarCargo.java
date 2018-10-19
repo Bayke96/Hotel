@@ -1,0 +1,637 @@
+package frontend;
+
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.geom.RoundRectangle2D;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import javax.swing.JFrame;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+import java.awt.GridLayout;
+import java.awt.Image;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.Shape;
+import java.awt.TextField;
+
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+
+import backend.BD;
+
+import com.jgoodies.forms.layout.FormSpecs;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.UIManager;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.ImageIcon;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.border.LineBorder;
+
+public class PantallaModificarCargo {
+	private static JTextField txtCargo;
+	private static JTable tablacargos;
+	private static JTextField txtsalario;
+
+	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		JFrame PantallaModificarCargo = new JFrame("Hotel Mi Reina - Autorización de Acceso");
+		PantallaModificarCargo.setTitle("Hotel Mi Reina C.A - Modificar cargo");
+		PantallaModificarCargo.getContentPane().setBackground(Color.WHITE);
+		PantallaModificarCargo.getContentPane().setLayout(null);
+		
+		UIManager.put("TextField.border", BorderFactory.createCompoundBorder(
+	            new CustomeBorder(), 
+	            new EmptyBorder(new Insets(4,4,4,4))));
+		
+		ImagePanel panel = new ImagePanel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(PantallaModificarCargo.class.getResource("/imagenes/BG.jpg"))).getImage());
+		panel.setDoubleBuffered(false);
+		panel.setFocusable(false);
+		panel.setFocusTraversalKeysEnabled(false);
+		panel.setOpaque(false);
+		panel.setBackground(new Color(255, 255, 255));
+		panel.setBounds(0, 0, 1012, 640);
+		PantallaModificarCargo.getContentPane().add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setFont(new Font("SansSerif", Font.BOLD, 12));
+		lblNombre.setForeground(Color.WHITE);
+		lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNombre.setBounds(19, 78, 200, 16);
+		panel.add(lblNombre);
+		
+		JLabel lbldepartamento = new JLabel(PantallaAcceso.departamento);
+		lbldepartamento.setHorizontalAlignment(SwingConstants.CENTER);
+		lbldepartamento.setForeground(Color.WHITE);
+		lbldepartamento.setFont(new Font("SansSerif", Font.BOLD, 12));
+		lbldepartamento.setBounds(231, 78, 200, 16);
+		panel.add(lbldepartamento);
+		
+		JLabel lblCargo = new JLabel("Cargo");
+		lblCargo.setFont(new Font("SansSerif", Font.BOLD, 12));
+		lblCargo.setForeground(Color.WHITE);
+		lblCargo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCargo.setBounds(455, 78, 200, 16);
+		panel.add(lblCargo);
+		
+		JLabel lblTurno_1 = new JLabel("Turno");
+		lblTurno_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTurno_1.setForeground(Color.WHITE);
+		lblTurno_1.setFont(new Font("SansSerif", Font.BOLD, 12));
+		lblTurno_1.setBounds(667, 78, 200, 16);
+		panel.add(lblTurno_1);
+		
+		
+		
+		JLabel lblHora = new JLabel(new Date().toString());
+		lblHora.setFont(new Font("SansSerif", Font.BOLD, 12));
+		lblHora.setForeground(Color.WHITE);
+		lblHora.setHorizontalAlignment(SwingConstants.CENTER);
+		lblHora.setBounds(19, 707, 139, 16);
+		panel.add(lblHora);
+		
+		
+		LocalDateTime ldt = LocalDateTime.now();
+		lblHora.setText("Fecha: " + DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH).format(ldt));
+		
+		JLabel lblNewLabel = new JLabel("Hotel Mi Reina C.A");
+		lblNewLabel.setBorder(new MatteBorder(0, 0, 2, 0, (Color) Color.WHITE));
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setFont(new Font("Script MT Bold", Font.BOLD, 29));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(19, 19, 855, 47);
+		panel.add(lblNewLabel);
+		
+		
+		JButton btnSalir = new JButton(" Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				PantallaModificarCargo.dispose();
+			}
+		});
+		btnSalir.setIcon(new ImageIcon(PantallaModificarCargo.class.getResource("/imagenes/LogoutIcon(1).png")));
+		btnSalir.setForeground(Color.WHITE);
+		btnSalir.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		btnSalir.setFocusPainted(false);
+		btnSalir.setBackground(new Color(0, 51, 51));
+		btnSalir.setBounds(893, 586, 113, 37);
+		panel.add(btnSalir);
+		
+		JLabel lblNuevoCargo = new JLabel("Nombre");
+		lblNuevoCargo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNuevoCargo.setForeground(Color.WHITE);
+		lblNuevoCargo.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		lblNuevoCargo.setBounds(392, 207, 97, 33);
+		panel.add(lblNuevoCargo);
+		
+		JComboBox comboboxnuevo = new JComboBox();
+		
+		comboboxnuevo.setFont(new Font("SansSerif", Font.BOLD, 12));
+		comboboxnuevo.setBounds(167, 207, 213, 28);
+		panel.add(comboboxnuevo);
+		
+		JComboBox comboboxdepartamento = new JComboBox();
+		JComboBox comboBoxCargos = new JComboBox();
+		comboboxdepartamento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BD op = new BD();
+				try {
+					if(!comboboxdepartamento.getSelectedItem().toString().equalsIgnoreCase("Seleccionar")){
+						op.CargarCargos(comboboxdepartamento.getSelectedItem().toString(), tablacargos);
+					}
+					if(comboboxdepartamento.getSelectedItem().toString().equalsIgnoreCase("Seleccionar")){
+						op.CargarCargos(tablacargos);
+					}
+					op.ListaCargos(comboboxdepartamento.getSelectedItem().toString(), comboBoxCargos);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		comboboxdepartamento.setFont(new Font("SansSerif", Font.BOLD, 12));
+		comboboxdepartamento.setBounds(167, 166, 213, 28);
+		panel.add(comboboxdepartamento);
+		
+
+	
+		comboBoxCargos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BD op = new BD();
+				op.Conectar("Hotel");
+				try {
+					op.ListaSalarios(comboboxdepartamento.getSelectedItem().toString(), comboBoxCargos.getSelectedItem().toString(), txtsalario);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				txtCargo.setText(comboBoxCargos.getSelectedItem().toString());
+				txtCargo.requestFocus();
+				txtCargo.selectAll();
+				
+				if(comboBoxCargos.getSelectedItem().toString().equalsIgnoreCase("Seleccionar")) txtCargo.setText("");
+			}
+		});
+		comboBoxCargos.setFont(new Font("SansSerif", Font.BOLD, 12));
+		comboBoxCargos.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar"}));
+		comboBoxCargos.setBounds(485, 166, 159, 28);
+		panel.add(comboBoxCargos);
+		
+		txtCargo = new JTextField();
+		txtCargo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(comboboxdepartamento.getSelectedItem().toString().equalsIgnoreCase("Seleccionar")) {
+					JOptionPane.showMessageDialog(null, "Error: Debe seleccionar un departamento!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(comboboxdepartamento.getSelectedItem().toString().equalsIgnoreCase(comboboxnuevo.getSelectedItem().toString())) {
+					JOptionPane.showMessageDialog(null, "Error: El departamento a donde va a mover a los empleados no puede ser el mismo!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(comboBoxCargos.getSelectedItem().toString().equalsIgnoreCase("Seleccionar")){
+					JOptionPane.showMessageDialog(null, "Error: Debe seleccionar un cargo!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(txtCargo.getText().trim().equalsIgnoreCase("")){
+					JOptionPane.showMessageDialog(null, "Error: Debe introducir un cargo!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(!txtCargo.getText().matches("^[ A-Za-z]+$")){
+					JOptionPane.showMessageDialog(null, "Error: El campo solo acepta letras y espacios!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					txtCargo.requestFocus();
+					txtCargo.selectAll();
+					return;
+				}
+				
+			
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				txtsalario.requestFocus();
+				txtsalario.selectAll();
+				
+				
+				
+			}
+		});
+		txtCargo.setHorizontalAlignment(SwingConstants.CENTER);
+		txtCargo.setForeground(Color.WHITE);
+		txtCargo.setFont(new Font("SansSerif", Font.BOLD, 12));
+		txtCargo.setColumns(10);
+		txtCargo.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(255, 255, 255)));
+		txtCargo.setBackground(new Color(0, 0, 0, 0));
+		txtCargo.setBounds(485, 210, 159, 28);
+		panel.add(txtCargo);
+		
+		
+		JButton btnAceptar = new JButton("");
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(comboboxdepartamento.getSelectedItem().toString().equalsIgnoreCase("Seleccionar")) {
+					JOptionPane.showMessageDialog(null, "Error: Debe seleccionar un departamento!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(comboboxdepartamento.getSelectedItem().toString().equalsIgnoreCase(comboboxnuevo.getSelectedItem().toString())) {
+					JOptionPane.showMessageDialog(null, "Error: El departamento a donde va a mover a los empleados no puede ser el mismo!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(comboBoxCargos.getSelectedItem().toString().equalsIgnoreCase("Seleccionar")){
+					JOptionPane.showMessageDialog(null, "Error: Debe seleccionar un cargo!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(txtCargo.getText().trim().equalsIgnoreCase("")){
+					JOptionPane.showMessageDialog(null, "Error: Debe introducir un cargo!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(!txtCargo.getText().matches("^[ A-Za-z]+$")){
+					JOptionPane.showMessageDialog(null, "Error: El campo solo acepta letras y espacios!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					txtCargo.requestFocus();
+					txtCargo.selectAll();
+					return;
+				}
+				
+				String valor = txtsalario.getText().replaceAll(",", ".");
+				if(txtsalario.getText().trim().equalsIgnoreCase("")){
+					JOptionPane.showMessageDialog(null, "Debe introducir un salario!", "Hotel Mi Reina C.A", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				if(!valor.matches("[0-9]+([,.][0-9]{1,2})?")){
+					JOptionPane.showMessageDialog(null, "El salario solo acepta números enteros y un maximo de 2 decimales!", "Hotel Mi Reina C.A", JOptionPane.ERROR_MESSAGE);
+					txtsalario.requestFocus();
+					txtsalario.selectAll();
+					return;
+				}
+				if(Double.parseDouble(valor) <= 0){
+					JOptionPane.showMessageDialog(null, "Debe introducir un precio mayor a 0!", "Hotel Mi Reina C.A - ERROR", JOptionPane.ERROR_MESSAGE);
+					txtsalario.requestFocus();
+					txtsalario.selectAll();
+					return;
+				}
+				
+				BD x = new BD();
+				
+				try {
+					x.Conectar("Hotel");
+					if(!comboboxnuevo.getSelectedItem().toString().equalsIgnoreCase("seleccionar")){
+						
+							if(x.BuscarCargo(comboboxnuevo.getSelectedItem().toString().toLowerCase(), txtCargo.getText().toLowerCase()) == true && !comboboxdepartamento.getSelectedItem().toString().equalsIgnoreCase(comboboxnuevo.getSelectedItem().toString())){
+								JOptionPane.showMessageDialog(null, "ERROR: Ya se encuentra un cargo con este nombre dentro del departamento!", "Hotel Mi Reina C.A - ERROR", JOptionPane.ERROR_MESSAGE);
+								txtCargo.requestFocus();
+								txtCargo.selectAll();
+								
+								return;
+							}
+						
+					}
+					
+					if(comboboxnuevo.getSelectedItem().toString().equalsIgnoreCase("Seleccionar") && x.BuscarCargo(comboboxdepartamento.getSelectedItem().toString(), txtCargo.getText().trim().toLowerCase()) == false ) {
+						x.ActualizarCargo(txtCargo.getText().trim().toLowerCase(), comboBoxCargos.getSelectedItem().toString(), comboboxdepartamento.getSelectedItem().toString(), Double.parseDouble(valor.replace(",", ".")));
+					
+						JOptionPane.showMessageDialog(null, "El cargo ha sido modificado", "Hotel Mi Reina C.A", JOptionPane.INFORMATION_MESSAGE);
+						
+					
+					}
+					if(!comboboxnuevo.getSelectedItem().toString().equalsIgnoreCase("Seleccionar") && x.BuscarCargo(comboboxnuevo.getSelectedItem().toString(), txtCargo.getText().trim().toLowerCase()) == false ) {
+						x.ActualizarCargo(txtCargo.getText(), comboBoxCargos.getSelectedItem().toString(), 
+								comboboxdepartamento.getSelectedItem().toString(),comboboxnuevo.getSelectedItem().toString(), Double.parseDouble(valor.replaceAll(",", ".")));
+						
+						
+						JOptionPane.showMessageDialog(null, "El cargo ha sido modificado", "Hotel Mi Reina C.A", JOptionPane.INFORMATION_MESSAGE);
+						
+					}
+					
+					
+					
+					
+					
+					
+					x.CargarCargos(tablacargos);
+					comboBoxCargos.setSelectedItem("Seleccionar");
+					comboboxdepartamento.setSelectedItem("Seleccionar");
+					comboboxnuevo.setSelectedItem("Seleccionar");
+					
+					x.ListaCargos(comboboxdepartamento.getSelectedItem().toString(), comboBoxCargos);
+					txtCargo.setText("");
+					txtsalario.setText("");
+					x.Desconectar();
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				
+				
+				
+			}
+		});
+		btnAceptar.setIcon(new ImageIcon(PantallaModificarCargo.class.getResource("/imagenes/AcceptIcon.png")));
+		btnAceptar.setForeground(Color.WHITE);
+		btnAceptar.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		btnAceptar.setFocusPainted(false);
+		btnAceptar.setBackground(new Color(0, 51, 51));
+		btnAceptar.setBounds(898, 541, 53, 37);
+		panel.add(btnAceptar);
+		
+		JButton btnBorrar = new JButton("");
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				comboBoxCargos.setSelectedItem("Seleccionar");
+				comboboxnuevo.setSelectedItem("Seleccionar");
+				comboboxdepartamento.setSelectedItem("Seleccionar");
+				txtCargo.setText("");
+				txtsalario.setText("");
+			}
+		});
+		btnBorrar.setIcon(new ImageIcon(PantallaModificarCargo.class.getResource("/imagenes/EraserIcon.png")));
+		btnBorrar.setForeground(Color.WHITE);
+		btnBorrar.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		btnBorrar.setFocusPainted(false);
+		btnBorrar.setBackground(new Color(0, 51, 51));
+		btnBorrar.setBounds(953, 541, 53, 37);
+		panel.add(btnBorrar);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBorder(null);
+		scrollPane.setBackground(new Color(0, 0, 0, 0));
+		scrollPane.setBounds(48, 249, 826, 353);
+		panel.add(scrollPane);
+		
+		tablacargos = new JTable();
+		tablacargos.setRowSelectionAllowed(false);
+		tablacargos.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		tablacargos.setGridColor(new Color(255, 255, 255));
+		tablacargos.setForeground(new Color(255, 255, 255));
+		tablacargos.setBorder(new LineBorder(new Color(0, 51, 51), 1, true));
+		tablacargos.setFillsViewportHeight(true);
+		tablacargos.setBackground(new Color(0, 51, 51));
+		tablacargos.setShowGrid(false);
+		tablacargos.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+					"<html><b>ID</b></html>", "<html><b>Departamento</b></html>", "<html><b>Cargo</b></html>","<html><b>Salario</b></html>", "<html><b>N\u00B0 Empleados</b></html>"
+				}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tablacargos.getColumnModel().getColumn(0).setResizable(false);
+		tablacargos.getColumnModel().getColumn(1).setResizable(false);
+		tablacargos.getColumnModel().getColumn(2).setResizable(false);
+		tablacargos.getColumnModel().getColumn(3).setResizable(false);
+		tablacargos.getColumnModel().getColumn(4).setResizable(false);
+		tablacargos.setShowHorizontalLines(true);
+		scrollPane.setViewportView(tablacargos);
+		
+		DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+		
+		headerRenderer.setBackground(new Color(0, 51, 51));
+		headerRenderer.setForeground(Color.WHITE);
+		headerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		headerRenderer.setOpaque(true);
+		tablacargos.getTableHeader().setReorderingAllowed(false);
+
+		for (int i = 0; i < tablacargos.getModel().getColumnCount(); i++) {
+		        tablacargos.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+		        tablacargos.getColumnModel().getColumn(i).setCellRenderer( headerRenderer );
+		     
+		}
+		
+		PantallaModificarCargo.setIconImage(Toolkit.getDefaultToolkit().getImage(PantallaModificarCargo.class.getResource("/imagenes/HotelIcon.png")));
+		PantallaModificarCargo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		PantallaModificarCargo.setResizable(false);
+		PantallaModificarCargo.setSize(1024, 668);
+		
+		
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		PantallaModificarCargo.setLocation(dim.width/2-PantallaModificarCargo.getSize().width/2, dim.height/2-PantallaModificarCargo.getSize().height/2);
+		
+		BD abc = new BD();
+		try {
+			abc.CargarCargos(tablacargos);
+			abc.ListaDepartamentos(comboboxdepartamento);
+			abc.ListaDepartamentos(comboboxnuevo);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		lblNombre.setText(WordUtils.capitalizeFully(PantallaAcceso.Usuario));
+		lblCargo.setText(WordUtils.capitalizeFully(PantallaAcceso.cargo));
+		lblTurno_1.setText(WordUtils.capitalizeFully(PantallaAcceso.Turno));
+		
+		JLabel lblCargo_1 = new JLabel("Cargo");
+		lblCargo_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCargo_1.setForeground(Color.WHITE);
+		lblCargo_1.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		lblCargo_1.setBounds(381, 163, 97, 33);
+		panel.add(lblCargo_1);
+		
+		JLabel lblModificarCargo = new JLabel("Modificar cargo");
+		lblModificarCargo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblModificarCargo.setForeground(Color.WHITE);
+		lblModificarCargo.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		lblModificarCargo.setBounds(113, 117, 267, 33);
+		panel.add(lblModificarCargo);
+		
+		JLabel lblDepartamento = new JLabel("Departamento");
+		lblDepartamento.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDepartamento.setForeground(Color.WHITE);
+		lblDepartamento.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		lblDepartamento.setBounds(52, 164, 106, 33);
+		panel.add(lblDepartamento);
+		
+		JLabel lblMover = new JLabel("Mover");
+		lblMover.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMover.setForeground(Color.WHITE);
+		lblMover.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		lblMover.setBounds(52, 204, 106, 33);
+		panel.add(lblMover);
+		
+		txtsalario = new JTextField();
+		txtsalario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(comboboxdepartamento.getSelectedItem().toString().equalsIgnoreCase("Seleccionar")) {
+					JOptionPane.showMessageDialog(null, "Error: Debe seleccionar un departamento!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(comboboxdepartamento.getSelectedItem().toString().equalsIgnoreCase(comboboxnuevo.getSelectedItem().toString())) {
+					JOptionPane.showMessageDialog(null, "Error: El departamento a donde va a mover a los empleados no puede ser el mismo!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(comboBoxCargos.getSelectedItem().toString().equalsIgnoreCase("Seleccionar")){
+					JOptionPane.showMessageDialog(null, "Error: Debe seleccionar un cargo!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(txtCargo.getText().trim().equalsIgnoreCase("")){
+					JOptionPane.showMessageDialog(null, "Error: Debe introducir un cargo!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if(!txtCargo.getText().matches("^[ A-Za-z]+$")){
+					JOptionPane.showMessageDialog(null, "Error: El campo solo acepta letras y espacios!", "Hotel Mi Reina C.A - Error", JOptionPane.WARNING_MESSAGE);
+					txtCargo.requestFocus();
+					txtCargo.selectAll();
+					return;
+				}
+				
+				String valor = txtsalario.getText().replaceAll(",", ".");
+				if(txtsalario.getText().trim().equalsIgnoreCase("")){
+					JOptionPane.showMessageDialog(null, "Debe introducir un salario!", "Hotel Mi Reina C.A", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				if(!valor.matches("[0-9]+([,.][0-9]{1,2})?")){
+					JOptionPane.showMessageDialog(null, "El salario solo acepta números enteros y un maximo de 2 decimales!", "Hotel Mi Reina C.A", JOptionPane.ERROR_MESSAGE);
+					txtsalario.requestFocus();
+					txtsalario.selectAll();
+					return;
+				}
+				if(Double.parseDouble(valor) <= 0){
+					JOptionPane.showMessageDialog(null, "Debe introducir un precio mayor a 0!", "Hotel Mi Reina C.A - ERROR", JOptionPane.ERROR_MESSAGE);
+					txtsalario.requestFocus();
+					txtsalario.selectAll();
+					return;
+				}
+				
+				BD x = new BD();
+				
+				try {
+					x.Conectar("Hotel");
+					if(!comboboxnuevo.getSelectedItem().toString().equalsIgnoreCase("seleccionar")){
+						
+							if(x.BuscarCargo(comboboxnuevo.getSelectedItem().toString().toLowerCase(), txtCargo.getText().toLowerCase()) == true && !comboboxdepartamento.getSelectedItem().toString().equalsIgnoreCase(comboboxnuevo.getSelectedItem().toString())){
+								JOptionPane.showMessageDialog(null, "ERROR: Ya se encuentra un cargo con este nombre dentro del departamento!", "Hotel Mi Reina C.A - ERROR", JOptionPane.ERROR_MESSAGE);
+								txtCargo.requestFocus();
+								txtCargo.selectAll();
+								
+								return;
+							}
+						
+					}
+					
+					if(comboboxnuevo.getSelectedItem().toString().equalsIgnoreCase("Seleccionar") && x.BuscarCargo(comboboxdepartamento.getSelectedItem().toString(), txtCargo.getText().trim().toLowerCase()) == false ) {
+						x.ActualizarCargo(txtCargo.getText().trim().toLowerCase(), comboBoxCargos.getSelectedItem().toString(), comboboxdepartamento.getSelectedItem().toString(), Double.parseDouble(valor.replace(",", ".")));
+					
+						JOptionPane.showMessageDialog(null, "El cargo ha sido modificado", "Hotel Mi Reina C.A", JOptionPane.INFORMATION_MESSAGE);
+						
+					
+					}
+					if(!comboboxnuevo.getSelectedItem().toString().equalsIgnoreCase("Seleccionar") && x.BuscarCargo(comboboxnuevo.getSelectedItem().toString(), txtCargo.getText().trim().toLowerCase()) == false ) {
+						x.ActualizarCargo(txtCargo.getText(), comboBoxCargos.getSelectedItem().toString(), 
+								comboboxdepartamento.getSelectedItem().toString(),comboboxnuevo.getSelectedItem().toString(), Double.parseDouble(valor.replaceAll(",", ".")));
+						
+						
+						JOptionPane.showMessageDialog(null, "El cargo ha sido modificado", "Hotel Mi Reina C.A", JOptionPane.INFORMATION_MESSAGE);
+						
+					}
+					
+					
+					
+					
+					
+					
+					x.CargarCargos(tablacargos);
+					comboBoxCargos.setSelectedItem("Seleccionar");
+					comboboxdepartamento.setSelectedItem("Seleccionar");
+					comboboxnuevo.setSelectedItem("Seleccionar");
+					
+					x.ListaCargos(comboboxdepartamento.getSelectedItem().toString(), comboBoxCargos);
+					txtCargo.setText("");
+					txtsalario.setText("");
+					x.Desconectar();
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			}
+		});
+		txtsalario.setHorizontalAlignment(SwingConstants.CENTER);
+		txtsalario.setForeground(Color.WHITE);
+		txtsalario.setFont(new Font("SansSerif", Font.BOLD, 12));
+		txtsalario.setColumns(10);
+		txtsalario.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(255, 255, 255)));
+		txtsalario.setBackground(new Color(0, 0, 0, 0));
+		txtsalario.setBounds(738, 210, 133, 28);
+		panel.add(txtsalario);
+		
+		JLabel lblSalario = new JLabel("Salario");
+		lblSalario.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSalario.setForeground(Color.WHITE);
+		lblSalario.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		lblSalario.setBounds(645, 207, 97, 33);
+		panel.add(lblSalario);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		PantallaModificarCargo.setVisible(true);
+	}
+}
+
+
